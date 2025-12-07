@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Auto-Sender</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>WhatsApp Automation</h1>
+            <div id="status-badge" class="badge disconnected">Disconnected</div>
+        </header>
+
+        <main>
+            <!-- QR Code Section -->
+            <section id="qr-section" class="card">
+                <h2>Authentication</h2>
+                <p>Scan the QR code to login.</p>
+                <div id="qrcode"></div>
+                <div id="loading-text" style="display:none;">Waiting for QR Code...</div>
+            </section>
+
+            <!-- Control Panel (Hidden until ready) -->
+            <section id="control-panel" class="card disabled">
+                <h2>Configuration</h2>
+
+                <div class="form-group">
+                    <label>Message Mode</label>
+                    <div class="mode-toggle">
+                        <label><input type="radio" name="mode" value="normal" checked onchange="toggleMode()"> Normal
+                            Message</label>
+                        <label><input type="radio" name="mode" value="grid" onchange="toggleMode()"> Grid
+                            Message</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="numbers">Phone Numbers (comma separated, with country code)</label>
+                    <input type="text" id="numbers" placeholder="919876543210, 15551234567" value="918145517446">
+                    <small>Do not include '+' or '-'</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <input type="text" id="message" value="Love You Re❤️😘">
+                </div>
+
+                <div id="grid-settings" class="row" style="display: none;">
+                    <div class="form-group">
+                        <label for="rows">Grid Rows</label>
+                        <input type="number" id="rows" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="cols">Grid Cols</label>
+                        <input type="number" id="cols" value="2">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="count">Send Count</label>
+                        <input type="number" id="count" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="delay">Delay (ms)</label>
+                        <input type="number" id="delay" value="300">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="schedule-time">Schedule Time (Optional)</label>
+                    <input type="text" id="schedule-time" placeholder="Select Date & Time">
+                </div>
+
+                <div class="row">
+                    <button id="start-btn" onclick="startSpam()">Send Now</button>
+                    <button id="schedule-btn" onclick="scheduleSpam()"
+                        style="background-color: var(--warning);">Schedule</button>
+                </div>
+
+                <hr style="border-color: #334155; margin: 20px 0;">
+
+                <h3>Manage Messages</h3>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="delete-count">Count to Delete</label>
+                        <input type="number" id="delete-count" value="1">
+                    </div>
+                    <button id="delete-btn" class="secondary" onclick="deleteMessages()"
+                        style="border-color: var(--error); color: var(--error);">Delete Last N Messages</button>
+                </div>
+
+                <button id="logout-btn" class="secondary" onclick="logout()">Logout</button>
+            </section>
+
+            <!-- Logs -->
+            <section id="logs-section" class="card">
+                <h2>Activity Logs</h2>
+                <div id="logs"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

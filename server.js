@@ -26,6 +26,7 @@ function startClient() {
         authStrategy: new LocalAuth(),
         puppeteer: {
             headless: true,
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         }
     });
